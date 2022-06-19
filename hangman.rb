@@ -1,3 +1,5 @@
+require 'json'
+
 class Word
   attr_accessor :str, :length, :array, :display, :compared
 
@@ -51,7 +53,33 @@ class Game
     puts @guess.str == @secret_word.str ? 'You found it !' : 'Too many tries..'
     puts "The word was #{@secret_word.str}"
   end
+
+  def save
+    json_object = JSON.dump(
+      {
+        secret_word: @secret_word,
+        guess: @guess,
+        remaining_guess: @remaining_guess,
+        compared_words: @compared_words
+      }
+    )
+    File.open('save.json', 'w') { |file| file.puts json_object }
+  end
+
+  def self.load
+    data = File.open('save.json', )
+  end
 end
 
 new_game = Game.new
-new_game.play
+
+loop do
+  begin
+    new_game.play
+  rescue Interrupt
+    puts 'Do you want to save ?'
+    input = gets.chomp
+    new_game.save if input == 'yes'
+  end
+  break if false
+end
