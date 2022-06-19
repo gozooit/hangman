@@ -6,7 +6,7 @@ class Word
     @array = @str.split('')
     @length = @str.length
     @display = @array.join(' ')
-    @compared = @array.map.with_index {|l, i| i == 0 ? l : '_'}.join
+    @compared = @array.map.with_index { |l, i| i.zero? ? l : '_' }.join
   end
 
   def pick_random_word
@@ -21,7 +21,7 @@ class Game
   def initialize
     @secret_word = Word.new
     @remaining_guess = 6
-    @compared_words = @secret_word.array.map.with_index {|l, i| i == 0 ? l : '_'}.join
+    @compared_words = @secret_word.array.map.with_index { |l, i| i.zero? ? l : '_' }.join
   end
 
   def compare(word1, word2 = @secret_word)
@@ -48,7 +48,7 @@ class Game
       res = compare(@guess)
       break if res == true || @remaining_guess.zero?
     end
-    puts @guess.str == @secret_word.str ? "You found it !" : "Too many tries.."
+    puts @guess.str == @secret_word.str ? 'You found it !' : 'Too many tries..'
     puts "The word was #{@secret_word.str}"
   end
 end
